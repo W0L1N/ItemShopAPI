@@ -16,7 +16,7 @@ import static com.kacwol.itemShop.security.config.JWTConstants.TOKEN_PREFIX;
 @Component
 public class JWTUtils {
 
-    @Value("${karold.online-store.jwtSecret}")
+    @Value("secret")
     private String secret;
 
     public String generateToken(String user) {
