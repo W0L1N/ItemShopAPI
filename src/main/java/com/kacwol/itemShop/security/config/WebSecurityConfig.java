@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -38,6 +40,8 @@ public class WebSecurityConfig {
 
     private final JWTUtils jwtUtils;
 
+    private final CustomUserDetailsService userDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationConfiguration authenticationConfiguration) throws Exception {
         http.csrf(csrf -> csrf.disable())
@@ -53,10 +57,6 @@ public class WebSecurityConfig {
                 .addFilterBefore(new JWTAuthorizationFilter(authenticationManager(http), customUserDetailsService,jwtUtils), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTAuthenticationFilter(authenticationManager(http), jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
-
-//                .addFilterBefore(new JWTAuthorizationFilter(authenticationManager(authenticationConfiguration), customUserDetailsService,jwtUtils), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(new JWTAuthenticationFilter(authenticationManager(authenticationConfiguration), jwtUtils), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
@@ -64,6 +64,14 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
     @Bean
@@ -83,11 +91,6 @@ public class WebSecurityConfig {
     public ModelMapper modelMapperBean(){
         return new ModelMapper();
     }
-
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
 
     @Bean
     public UserDetailsService userDetailsServiceBean() throws Exception {

@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @Entity
 @NoArgsConstructor
@@ -28,6 +30,8 @@ public class User {
 
     private String email;
 
+    private BigDecimal wallet;
+
     @Enumerated(value = EnumType.STRING)
     private UserType userType;
 
@@ -37,5 +41,6 @@ public class User {
         this.username = username;
         this.email = email;
         this.userType = userType;
+        wallet = BigDecimal.valueOf(100);
     }
 }

@@ -28,7 +28,7 @@ public class RefreshToken {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     private String token;
 
     @Column(nullable = false)

@@ -28,8 +28,6 @@ public class AuthController {
 
     private UserService userService;
 
-
-
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserService userService) {
         this.authenticationManager = authenticationManager;
@@ -48,8 +46,8 @@ public class AuthController {
 
         CustomUserDetails customUserDetails = ((CustomUserDetails) authentication.getPrincipal());
         String token = userService.login(customUserDetails.getEmail());
-        String refreshToken= userService.createRefreshToken(customUserDetails.getId());
-        return ResponseEntity.ok(new AuthResponse(token, refreshToken));
+//        String refreshToken= userService.createRefreshToken(customUserDetails.getId());
+        return ResponseEntity.ok(new AuthResponse(token, null));
     }
 
     @PostMapping("/signup")

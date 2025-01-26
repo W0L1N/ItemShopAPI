@@ -1,17 +1,18 @@
 package com.kacwol.itemShop.domain.model.dto;
 
+import com.kacwol.itemShop.domain.model.Item;
 import com.kacwol.itemShop.domain.model.Offer;
-import com.kacwol.itemShop.domain.model.OfferStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
-public class OfferDto {
-
-    private Long id;
+public class ItemDto {
 
     private String name;
 
@@ -21,14 +22,14 @@ public class OfferDto {
 
     private BigDecimal price;
 
-    private OfferStatus status;
+    private LocalDateTime dateTime;
 
-    public OfferDto(Offer offer) {
-        this.id = offer.getId();
+    public ItemDto(Item item) {
+        Offer offer = item.getOffer();
         this.name = offer.getName();
         this.description = offer.getDescription();
         this.image = offer.getImage();
         this.price = offer.getPrice();
-        this.status = offer.getStatus();
+        this.dateTime = item.getDateTime();
     }
 }

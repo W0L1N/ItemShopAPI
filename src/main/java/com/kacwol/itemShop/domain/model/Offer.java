@@ -1,5 +1,6 @@
 package com.kacwol.itemShop.domain.model;
 
+import com.kacwol.itemShop.domain.model.dto.OfferDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,13 +36,21 @@ public class Offer {
     @ManyToOne
     private User user;
 
-//    public Offer(OfferDto dto, User user) {
-//        this.id = dto.getId();
-//        this.name = dto.getName();
-//        this.description = dto.getDescription();
-//        this.image = dto.getImage();
-//        this.price = dto.getPrice();
-//        this.status = dto.getStatus();
-//        this.user = user;
-//    }
+    public Offer(OfferDto dto, User user) {
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.description = dto.getDescription();
+        this.image = dto.getImage();
+        this.price = dto.getPrice();
+        this.status = OfferStatus.OPEN;
+        this.user = user;
+    }
+
+    public Offer buy() {
+        if(status == OfferStatus.CLOSE) {
+            throw new RuntimeException();
+        }
+        status = OfferStatus.CLOSE;
+        return this;
+    }
 }
